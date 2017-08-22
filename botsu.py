@@ -127,8 +127,8 @@ async def joindate(member: discord.Member):# ====================== tells you wh
 # ================================================================= because it is good to remember who helped when the rest laughed
 @bot.command(pass_context=True, name="credits", description="Robotsu alpha is brought to you because of the following support")
 async def credits(ctx):# ========================================== if your name isn't here, is because you didn't help
-    embed = discord.Embed(title="Robotsu Beta version 0.6 - Credits", colour=discord.Colour(0x2196f3), description="**ロボつ²** is the first Bot made by 「XΛOS」#1502, but it has grown from **alpha stage** to **beta** with the support and guidance of many expert individuals.")
-    embed.add_field(name="Sincere thanks to:", value="Maximilian\nMiguel\nZey\nMei\nTyler\nLesbisch™\nLin Lin\nAndrija", inline=True)
+    embed = discord.Embed(title="Robotsu Beta version 0.6 - Credits", colour=discord.Colour(0x2196f3), description="**ロボつ²** is the first Bot made by <@!323578534763298816>, but it has grown from **alpha stage** to **beta** with the support and guidance of many expert individuals.")
+    embed.add_field(name="Sincere thanks to:", value="Maximilian\nMiguel\nZey\nMei\nTyler\nLesbisch\nLin Lin\nAndrija", inline=True)
     embed.add_field(name="in alphabetical order", value="<@!271238766323171328>\n<@!109353460524191744>\n<@!114941315417899012>\n<@!87600987040120832>\n<@!183389299524239361>\n<@!131950684785475584>\n<@!324040201225633794>\n<@!339378386080104450>", inline=True)
     await bot.say(embed=embed)# =================================== thank you guys and girls!
 
@@ -190,4 +190,4 @@ async def on_command_error(error, ctx):# ========================== this sends t
 
 # ================================================================= Token
 bot.run('TOKEN_GOES_HERE_BUT_DO_NOT_SHARE_IT')
-# ================ Just do us all a favour, and don't share your token, thanks.
+# ================================================================= just do us all a favour, and don't share your token, thanks.
