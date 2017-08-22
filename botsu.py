@@ -130,8 +130,8 @@ async def joindate(member: discord.Member):
 @bot.command(pass_context=True, name="credits", description="Robotsu alpha is brought to you because of the following support")
 async def credits(ctx):# ================ If your name isn't here, is because you didn't help
     embed = discord.Embed(title="Robotsu Beta version 0.6 - Credits", colour=discord.Colour(0x2196f3), description="**ロボつ²** is the first Bot made by 「XΛOS」#1502, but it has grown from **alpha stage** to **beta** with the support and guidance of many expert individuals.")
-    embed.add_field(name="Thanks to:", value="Maximilian\nMiguel F\nZey\nMei\nTyler\nLesbisch™\nLin Lin\nAndrija", inline=True)
-    embed.add_field(name=":small_orange_diamond:", value="**Irae/Clockwork#9860\nAnthsoul#6929\nzeyla#5479\nmei#5429\nTrain#1115\nLesbisch#8111\nLin²#5427**\nRetardedKid#2405", inline=True)
+    embed.add_field(name="Sincere thanks to:", value="Maximilian\nMiguel F\nZey\nMei\nTyler\nLesbisch™\nLin Lin\nAndrija", inline=True)
+    embed.add_field(name="in alphabetical order", value="**Irae/Clockwork#9860\nAnthsoul#6929\nzeyla#5479\nmei#5429\nTrain#1115\nLesbisch#8111\nLin²#5427**\nRetardedKid#2405", inline=True)
     await bot.say(embed=embed)
 
 # ================ Simple command to send notes to self in DM, at least it is useful to me
