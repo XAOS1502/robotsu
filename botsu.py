@@ -78,20 +78,21 @@ async def unmute(ctx, user:discord.Member=None):  # ================= notice the
         await bot.edit_channel_permissions(channel, user, text_overwrite)
     await bot.say(embed=embed)  # =================================== and vam! another awesome Embed
 
-@bot.command(pass_context=True, name="kick", hidden=True, description="Robotsu can kick a member, they'll be able to join with an invite")
-async def kick(ctx, user: discord.Member = None):  # ================ Haven't tried it, don't want to kick members just yet
-    """Kicks the mentioned member from the server."""  # ============ 
-    if ctx.message.author.server_permissions.kick_members == True:# 
-        if user != None:  # ========================================= 
-            embed = discord.Embed(colour=0x5de316)  # =============== 
-            embed.add_field(name="­", value="{0} has kicked {1} for {2}".format(ctx.message.author.mention, user.mention, reason))
-            await bot.say(embed=embed)  # =========================== this is to send the Embed above as message in the channel
-            await bot.kick(user)  # ================================= 
+@bot.command(pass_context=True, name="kick", hidden=True)  # ======== finally kick command is fully working
+@commands.has_permissions(manage_server=True)
+async def kick(ctx, user: discord.Member=None, *, reason: str=None):
+    """Kicks member, needs mention and reason."""
+    if ctx.message.author.server_permissions.kick_members == True:
+        if user != None:
+            embed = discord.Embed(colour=0xe67e22)
+            embed.add_field(name="\N{CRAB}" , value="{0} kicked {1} because: {2}".format(ctx.message.author.display_name, user.display_name, reason))
+            await bot.say(embed=embed)
+            await bot.kick(user)
         else:
-            embed = discord.Embed(title="You need to specify user first", value="­", colour=0x5de316)
-            await bot.say(embed=embed)  # =========================== same as the above Embed, just different content, duh
+            embed = discord.Embed(title="First you need to mention user", value="Then a reason", colour=0xd35400)
+            await bot.say(embed=embed)
     else:
-        await bot.say("You don't have permissions to kick anybody, try `kickme` command instead.")
+        await bot.say("You haven't permission to kick anybody, try command `kickme` instead.")
 
 @bot.command(pass_context=True, hidden=True)  # ==================== the hidden is to hide it from help page, rip help
 async def ban(ctx, user: discord.Member = None):  # ================ might have used it a few days back, forgot it was here
@@ -161,33 +162,89 @@ async def on_command_error(error, ctx):  # ========================== this sends
     if isinstance(error, commands.CommandNotFound):  # ============== when there's a typo or a command from another bot
         return
     if isinstance(error, commands.DisabledCommand):  # ============== read
-        await bot.send_message(ctx.message.channel, "This command has been disabled")
+        await bot.send_message(ctx.message.channel, "This command has been disabled by the server owner")
         return
     if isinstance(error, checks.dev_only):  # ======================= very clear one
-        await bot.send_message(ctx.message.channel, "This command can only be ran by the bot developers")
-        return
-    if isinstance(error, checks.owner_only):  # ===================== this is me, only I can run it! Mwahaha kukuku
-        await bot.send_message(ctx.message.channel, "This command can only be ran by the bot owner")
-        return
-    if isinstance(error, checks.not_nsfw_channel):  # =============== haven't used this one yet...
-        await bot.send_message(ctx.message.channel, "This command can only be ran in NSFW enabled channels. It must either be named `nsfw` or the name must start with `nsfw-`")
-        return
-    if isinstance(error, checks.not_server_owner):  # =============== since I have the bot and I'm the bot owner also, not sure how this works for normals
-        await bot.send_message(ctx.message.channel, "Only the server owner (`{}`) can use this command".format(ctx.message.server.owner))
-        return
-    if isinstance(error, checks.no_permission):  # ================== out of luck my friend
-        await bot.send_message(ctx.message.channel, "You do not have permission to use this command".format(ctx.message.server.owner))
+        await bot.send_message(ctx.message.channel, "This command can only be ran by **XAOS1502**")
         return
     if ctx.message.channel.is_private:  # =========================== I know you all have tried, but commands only work in servers, nor inside your inbox dude!
-        await bot.send_message(ctx.message.channel, "An error occured while trying to run this command, this is most likely because it was ran in a private message channel. Please try running this command on a server.")
+        await bot.send_message(ctx.message.channel, "An error occurred while trying to run this command,\n"
+                                                    "robotsu's commands don't run in a private messages channel.\n"
+                                                    "Please try running this command on a server where he's member.")
         return
-
-    # =============================================================== in case the bot failed to send a message to the channel, the try except pass statement is to prevent another error
     try:
         await bot.send_message(ctx.message.channel, error)
     except:
         pass
-    log.error("An error occured while executing the {} command: {}".format(ctx.command.qualified_name, error))
+    log.error("An error occurred while executing the {} command: {}".format(ctx.command.qualified_name, error))
+
+# ================================
+# WORDS IN MSG w/o PREFIX
+# ================================
+@bot.event
+async def on_message(message):
+    if "(╯°□°）╯︵ ┻━┻" in message.content:
+        EmbedFlip = discord.Embed()
+        EmbedFlip.title = "{0}".format(message.author.display_name)
+        EmbedFlip.colour = discord.Colour(0xbb94de)
+        EmbedFlip.description = "{0}".format(random.choice(flipping_tables))
+        await bot.send_message(message.channel, embed=EmbedFlip)
+
+    if message.content.startswith("plzpm me"):
+        await bot.say('I sent you a DM!')
+        await bot.send_message(message.author, message.content.replace('plzpmme ', ''))
+    await bot.process_commands(message)
+
+    if message.content.startswith("I love you"):
+        EmbedLuv = discord.Embed(colour=discord.Colour(0xf6a3bf), description="We have some (ღˇ◡ˇ(ᵕ◡ᵕෆ) love birds here.")
+        await bot.send_message(message.channel, embed=EmbedLuv)
+
+    if message.content.startswith("Happy Birthday"):
+        EmbedBd = discord.Embed()
+        EmbedBd.title = "🎂"
+        EmbedBd.colour = discord.Colour(0xff5a93)
+        EmbedBd.description = "ღゝ◡╹)ノ♡✯ℋᵅᵖᵖᵞ ℬⁱʳᵗᑋᵈᵃᵞ✯ **{}**\nfrom **robotsu**\nwith love.".format(message.author.display_name)
+        await bot.send_message(message.channel, embed=EmbedBd)
+
+    if message.content.lower() in spam_list:
+        EmbedSpam = discord.Embed(colour=discord.Colour(0xed1163), description="Not nice.")
+        await bot.send_message(message.channel, embed=EmbedSpam)
+
+    await bot.process_commands(message)
+
+# ================================
+# LIST OF COMMAND LISTS
+# ================================
+spam_list = [
+    "who wants nudes",
+    "want nudes",
+    "send me nudes",
+    "see nudes",
+    "is naked",
+    "her naker",
+    "my dick"
+]
+flipping_tables = [
+    "(∩｀-´)⊃━☆ﾟ.*･｡ﾟ ︵ ┻━┻\n*tablerus-repellus!*",
+    "┻━┻ ︵ ┐( ˘ㅅ˘)┌ \nMeh, that table passed far away!",
+    "(╯°□°)╯︵ ┻━┻\nTake this back!",
+    "┻━ ︵ ¯\\(｡･益･)┌┛ ︵ ━┻\nTable destroyed!",
+    "(ノ `Д´)ノ ┬─┬\nWhy you? Take this!",
+    "┬─┬ ノ( º _ ºノ)\nBetter luck next time!",
+    "╰(⇀ᗣ↼‶)╯ ︵ ┻━┻\n**robotsu** ducked that one",
+    "︵ ┻━┻ . .･ヾ(。￣□￣)ﾂ\n**robotsu** ran faster than sound!",
+    "!(ﾉ｀◎´)ﾉ ︵ ┻━┻\nTable bounced back at you!",
+    "(つ•̀ω•́)つ ︵┬─┬\nNothing can touch **robotsu**",
+    "ヽ( ･∀･)ﾉ┌┛︵ ┻━┻\n**robotsu** kicked the table back at you!",
+    "┻━┻ ︵ (ノ`Д´)ノ\n**robotsu** dove away!",
+    "ヾ(ﾟ∀ﾟ○)ﾂ三ヾ(●ﾟ∀ﾟ)ﾉ\nRunning zig-zag so no table can hit him",
+    "┬─┬ ヾ(･д･ヾ)\nTables bow down to **robotsu**'s feet",
+    "╭(°ㅂ°)╮┻━┻ ︵╰(°ㅂ°)╯\nWhich one am I? Confusion spell.",
+    "┬─┬﻿ ノ( ゜-゜ノ)\nStop messing around with tables and go back to school",
+    "(｀´)ゞ ((┻━┻))\nTelekinesis counter-attack",
+    "(〜￣っ￣)〜 ︵┻━┻\nLOL, no use trying again...",
+    ".·´¯`(>▂\nHow could you hit **robotsu**?"
+]
 
 # =================================================================== Token
 bot.run('TOKEN_GOES_HERE_BUT_DO_NOT_SHARE_IT')
