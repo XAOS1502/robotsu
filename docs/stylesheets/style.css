@@ -367,14 +367,9 @@ header h2 {
   width: 50%;
   z-index: 4;
 }
+/* Robotsu's image as background */
 .intro {
-  background: #edf6ff;
-  background: -moz-linear-gradient(top, #ffffff 0%, #edf6ff 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #edf6ff));
-  background: -webkit-linear-gradient(top, #ffffff 0%, #edf6ff 100%);
-  background: -o-linear-gradient(top, #ffffff 0%, #edf6ff 100%);
-  background: -ms-linear-gradient(top, #ffffff 0%, #edf6ff 100%);
-  background: linear-gradient(to bottom, #ffffff 0%, #edf6ff 100%);
+  background: url('../images/robotsu_xaos1502.png') center top no-repeat;
   float: left;
   height: 590px;
   width: 100%;
